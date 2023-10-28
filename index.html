@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - ToDo App</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    
+</head>
+<body class="container">
+    
+    <h1>ToDo App</h1>
+
+    <input type="text" id="task"> <button class="btn btn-primary" onclick="addToList()">Add</button>
+
+    <hr>
+
+    <ul class="list-group" id="list-group">
+    </ul>
+
+</body>
+<script>
+ 
+todolist = ["Pay Electricity Bill"]
+
+function arrayToList() {
+    
+    output = ""
+    
+    for(let i = 0; i < todolist.length; i++) {
+        output = output + `<li class="list-group-item">
+            <span style="cursor: pointer" onclick="doneTask(this)">${todolist[i]}</span> 
+            <button class="btn-close" onclick="removeTask('${todolist[i]}')"></button>
+            </li>`    
+    }
+    
+    document.getElementById("list-group").innerHTML = output
+    
+}
+
+
+function doneTask(spanelement) {
+    var task = spanelement.innerHTML
+    // alert(task)
+    spanelement.innerHTML = task.strike()
+}
+
+
+function removeTask(task) {
+    //alert(task)
+
+    const index = todolist.indexOf(task); //this will fetch the index number of task in array
+    if (index > -1) {   //this will check whether task is available in array or not if available then index will be greater than -1
+        todolist.splice(index, 1); //this will remove 1 element from the index number
+    }
+
+    arrayToList()
+}
+
+
+
+
+
+arrayToList()
+
+function addToList() {
+    
+    task = document.getElementById("task").value
+    
+    // alert(task)
+
+    todolist.push(task)
+
+    arrayToList()
+}
+
+
+
+
+
+/*
+CW3: Create variable output and assign all elements of 
+array to id list-group
+document.getElementById("list-group").innerHTML = output
+*/
+
+/**
+ * 
+CW1: WA Function which will read value of text box and alert
+function should be called on click of add button
+
+CW2: Create an array todolist and loop through each element
+i.e. print all elements from todolist array using for loop
+todolist = ["Pay Electricity Bill", "Recharge Mobile"]
+
+*/
+</script>
+
+</html>
