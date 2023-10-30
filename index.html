@@ -15,7 +15,7 @@
     
     <h1>ToDo App</h1>
 
-    <input type="text" id="task"> <button class="btn btn-primary" onclick="addToList()">Add</button>
+    <input type="text" id="task"  onkeypress="handleEnter(event)" autofocus> <button class="btn btn-primary" onclick="addToList()">Add</button>
 
     <hr>
 
@@ -25,17 +25,33 @@
 </body>
 <script>
  
+function handleEnter(event) {
+    if (event.key === "Enter") {
+        addToList()
+    }
+}
+
 todolist = ["Pay Electricity Bill"]
+done = [] //to handle done task to show strike while adding new task
 
 function arrayToList() {
     
     output = ""
     
     for(let i = 0; i < todolist.length; i++) {
-        output = output + `<li class="list-group-item">
-            <span style="cursor: pointer" onclick="doneTask(this)">${todolist[i]}</span> 
-            <button class="btn-close" onclick="removeTask('${todolist[i]}')"></button>
-            </li>`    
+
+        if(done.includes(todolist[i])) {
+            
+            output = output + `<li class="list-group-item">
+                <span style="cursor: pointer" onclick="doneTask(this)"><strike>${todolist[i]}</strike></span> 
+                <button class="btn-close" onclick="removeTask('${todolist[i]}')"></button>
+                </li>`
+        } else {
+            output = output + `<li class="list-group-item">
+                <span style="cursor: pointer" onclick="doneTask(this)">${todolist[i]}</span> 
+                <button class="btn-close" onclick="removeTask('${todolist[i]}')"></button>
+                </li>`    
+        }
     }
     
     document.getElementById("list-group").innerHTML = output
@@ -46,7 +62,18 @@ function arrayToList() {
 function doneTask(spanelement) {
     var task = spanelement.innerHTML
     // alert(task)
-    spanelement.innerHTML = task.strike()
+    if (task.includes("<strike>")) {
+        spanelement.innerHTML = task.replace(/<strike>/g, '').replace(/<\/strike>/g, '');
+
+        const index = done.indexOf(task);
+        if (index > -1) {
+            done.splice(index, 1);
+        }
+    } else {
+        done.push(task)
+        spanelement.innerHTML = task.strike()
+    }
+
 }
 
 
@@ -76,6 +103,9 @@ function addToList() {
     todolist.push(task)
 
     arrayToList()
+
+    document.getElementById("task").value = ""
+    document.getElementById("task").focus()
 }
 
 
