@@ -85,6 +85,11 @@ function removeTask(task) {
         todolist.splice(index, 1); //this will remove 1 element from the index number
     }
 
+    const doneindex = done.indexOf(task);
+    if (doneindex > -1) {
+        done.splice(doneindex, 1);
+    }
+
     arrayToList()
 }
 
